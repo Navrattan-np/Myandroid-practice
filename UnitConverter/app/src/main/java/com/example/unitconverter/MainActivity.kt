@@ -65,10 +65,18 @@ fun UnitConverter(){
     var iconversionFactor by remember{mutableStateOf(1.0)}
     var oconversionFactor by remember{mutableStateOf(1.0)}
 
+    data class UnitSaver(val name:String,val factor:Double)
+    val unitList=listOf(
+        UnitSaver("cm",0.01),
+        UnitSaver("m",1.0),
+        UnitSaver("feet",0.3048),
+        UnitSaver("millimeter",0.001)
+    )
+
     fun conversionCalculate(){
-          val input=inputValue.toDoubleOrNull() ?:0.0
-          val result=(input*iconversionFactor/oconversionFactor*100).roundToInt() /100.0
-          outputValue=result.toString()
+        val input=inputValue.toDoubleOrNull() ?:0.0
+        val result=(input*iconversionFactor/oconversionFactor*100).roundToInt() /100.0
+        outputValue=result.toString()
     }
 
 
@@ -80,115 +88,65 @@ fun UnitConverter(){
     ) {
         Spacer(modifier=Modifier.height(125.dp))
 
-       Text("Unit converter",style=MaterialTheme.typography.headlineLarge)
+        Text("Unit converter",style=MaterialTheme.typography.headlineLarge)
         Spacer(modifier=Modifier.height(16.dp))
 
-       OutlinedTextField(
-           value = inputValue,
-           onValueChange = {
-                            inputValue=it
-                            conversionCalculate()
-                           },
-           label={Text("Enter value:")},
-           keyboardOptions=KeyboardOptions(keyboardType= KeyboardType.Decimal)
-       )
+        OutlinedTextField(
+            value = inputValue,
+            onValueChange = {
+                inputValue=it
+                conversionCalculate()
+            },
+            label={Text("Enter value:")},
+            keyboardOptions=KeyboardOptions(keyboardType= KeyboardType.Decimal)
+        )
         Spacer(modifier=Modifier.height(16.dp))
 
-       Row {
-           //input box
-          Box {
-              Button(onClick = { iExpand=true }) {
-                  Text(inputField)
-                  Icon(Icons.Default.ArrowDropDown, contentDescription = "Arrow down")
-              }
-              DropdownMenu(expanded=iExpand,onDismissRequest={iExpand=false}){
-                  DropdownMenuItem(
-                      text={Text("cm")},
-                      onClick={
-                          iExpand=false
-                          inputField="cm"
-                          iconversionFactor=.01
-                          conversionCalculate()
-                      }
-                  )
-                  DropdownMenuItem(
-                      text={Text("m")},
-                      onClick={
-                          iExpand=false
-                          inputField="m"
-                          iconversionFactor=1.0
-                          conversionCalculate()
-                      }
-                  )
-                  DropdownMenuItem(
-                      text={Text("feet")},
-                      onClick={
-                          iExpand=false
-                          inputField="feet"
-                          iconversionFactor=0.3048
-                          conversionCalculate()
-                      }
-                  )
-                  DropdownMenuItem(
-                      text={Text("millimeter")},
-                      onClick={
-                          iExpand=false
-                          inputField="millimeter"
-                          iconversionFactor=0.001
-                          conversionCalculate()
-                      }
-                  )
-              }
-          }
-           Spacer(modifier=Modifier.width(3.dp))
-           //output box
-          Box{
-              Button(onClick={ oExpand=true }){
-                  Text(outputField)
-                  Icon(Icons.Default.ArrowDropDown,contentDescription="Arrow down 2")
-              }
-              DropdownMenu(expanded=oExpand,onDismissRequest={oExpand=false}){
-                  DropdownMenuItem(
-                      text={Text("cm")},
-                      onClick={
-                          oExpand=false
-                          outputField="cm"
-                          oconversionFactor=.01
-                          conversionCalculate()
-                      }
-                  )
-                  DropdownMenuItem(
-                      text={Text("m")},
-                      onClick={
-                          oExpand=false
-                          outputField="m"
-                          oconversionFactor=1.0
-                          conversionCalculate()
-                      }
-                  )
-                  DropdownMenuItem(
-                      text={Text("feet")},
-                      onClick={
-                          oExpand=false
-                          outputField="feet"
-                          oconversionFactor=.3048
-                          conversionCalculate()
-                      }
-                  )
-                  DropdownMenuItem(
-                      text={Text("millimeter")},
-                      onClick={
-                          oExpand=false
-                          outputField="millimeter"
-                          oconversionFactor=.001
-                          conversionCalculate()
-                      }
-                  )
-              }
-          }
-       }
+        Row {
+            //input box
+            Box {
+                Button(onClick = { iExpand=true }) {
+                    Text(inputField)
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = "Arrow down")
+                }
+                DropdownMenu(expanded=iExpand,onDismissRequest={iExpand=false}){
+                    unitList.forEach { unit ->
+                        DropdownMenuItem(
+                            text={Text(unit.name)},
+                            onClick={
+                                iconversionFactor=unit.factor
+                                iExpand=false
+                                inputField=unit.name
+                                conversionCalculate()
+                            }
+                        )
+                    }
+                }
+            }
+            Spacer(modifier=Modifier.width(3.dp))
+            //output box
+            Box{
+                Button(onClick={ oExpand=true }){
+                    Text(outputField)
+                    Icon(Icons.Default.ArrowDropDown,contentDescription="Arrow down 2")
+                }
+                DropdownMenu(expanded=oExpand,onDismissRequest={oExpand=false}){
+                    unitList.forEach { unit ->
+                        DropdownMenuItem(
+                            text={Text(unit.name)},
+                            onClick={
+                                oconversionFactor=unit.factor
+                                oExpand=false
+                                outputField=unit.name
+                                conversionCalculate()
+                            }
+                        )
+                    }
+                }
+            }
+        }
         Spacer(modifier=Modifier.height(12.dp))
-       Text("Result: $outputValue $outputField",style= MaterialTheme.typography.headlineMedium,fontFamily= FontFamily.Monospace)
+        Text("Result: $outputValue $outputField",style= MaterialTheme.typography.headlineMedium,fontFamily= FontFamily.Monospace)
     }
 }
 
