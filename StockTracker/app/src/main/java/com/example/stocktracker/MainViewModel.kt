@@ -9,21 +9,25 @@ import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
 
-    private val _CurrencyListState: MutableState<CurrencyState> =mutableStateOf(CurrencyState())
+    private val _currencyListState: MutableState<CurrencyState> =mutableStateOf(CurrencyState())
 
-    val CurrencyListState: State<CurrencyState> = _CurrencyListState
+    val currencyListState: State<CurrencyState> = _currencyListState
+
+    init{
+        fetchDetail()
+    }
 
     private fun fetchDetail(){
         viewModelScope.launch(){
               try{
                   val response=CoinService.getDetail()
-                  _CurrencyListState.value=_CurrencyListState.value.copy(
+                  _currencyListState.value=_currencyListState.value.copy(
                                                               loading=false,
                                                               error=null,
                                                               list=response
                                                             )
               }catch(e:Exception){
-                  _CurrencyListState.value=_CurrencyListState.value.copy(
+                  _currencyListState.value=_currencyListState.value.copy(
                                                                 loading=false,
                                                                 error=e.message
                                                                )
