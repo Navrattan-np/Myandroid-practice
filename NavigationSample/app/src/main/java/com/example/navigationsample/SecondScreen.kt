@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -19,8 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SecondScreen(navigatetofirstscreen:()->Unit){
-    val name = remember{ mutableStateOf("") }
+fun SecondScreen(name:String,age:Int,navigatetofirstscreen:()->Unit,navigatetothirdscreen:()->Unit){
 
     Column(
         modifier= Modifier
@@ -30,11 +28,18 @@ fun SecondScreen(navigatetofirstscreen:()->Unit){
         verticalArrangement= Arrangement.Center
     ){
         Text("This is Second screen", fontSize = 24.sp)
-        Text("Welcome",fontSize=24.sp)
+        Text("Welcome $name",fontSize=24.sp)
+        Text("Your age: $age",fontSize=24.sp)
+        Spacer(modifier=Modifier.height(8.dp))
         Button(onClick = {
                navigatetofirstscreen()
         }) {
             Text("Go to first screen")
+        }
+        Button(onClick={
+            navigatetothirdscreen()
+        }){
+            Text("Go to third screen")
         }
     }
 }
@@ -42,5 +47,5 @@ fun SecondScreen(navigatetofirstscreen:()->Unit){
 @Preview(showBackground = true)
 @Composable
 fun SecondScreenPreview(){
-    SecondScreen({})
+    SecondScreen("denis",0,{},{})
 }

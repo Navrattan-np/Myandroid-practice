@@ -38,14 +38,26 @@ fun MyApp(){
 
       NavHost(navController = navControllerVar , startDestination = "firstscreen"){
           composable(route="firstscreen"){
-              FirstScreen{
-                    navControllerVar.navigate("secondscreen")
-              }
+              FirstScreen(navigatetosecondscreen = {namepassed,agepassed->
+                           val safeName = if (namepassed.isBlank()) "Guest" else namepassed
+                           val safeAge= agepassed.toIntOrNull()?:0
+                           navControllerVar.navigate("secondscreen/$safeName/$safeAge")
+                         }
+              )
           }
-          composable(route="secondscreen"){
-                 SecondScreen{
-                     navControllerVar.navigate("firstScreen")
-                 }
+          composable(route="secondscreen/{name}/{age}"){backStack->
+                 val ageString=backStack.arguments?.getString("age")?:"0"
+                 SecondScreen(
+                     name=backStack.arguments?.getString("name")?:"User",
+                     age=ageString.toIntOrNull()?:0,
+                     navigatetofirstscreen={navControllerVar.navigate("firstscreen")},
+                     navigatetothirdscreen = {navControllerVar.navigate("thirdscreen")}
+                 )
+          }
+          composable(route="thirdscreen"){
+              ThirdScreen{
+                  navControllerVar.navigate("firstscreen")
+              }
           }
       }
 }

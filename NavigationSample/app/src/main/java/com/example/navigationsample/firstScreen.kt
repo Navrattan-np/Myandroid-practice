@@ -1,6 +1,5 @@
 package com.example.navigationsample
 
-import android.window.SplashScreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,8 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FirstScreen(navigatetosecondScreen:()->Unit){
+fun FirstScreen(navigatetosecondscreen:(String,String)->Unit){
     val name = remember{ mutableStateOf("") }
+    val age=remember{mutableStateOf("")}
 
     Column(
         modifier= Modifier
@@ -36,17 +36,23 @@ fun FirstScreen(navigatetosecondScreen:()->Unit){
                           onValueChange = { name.value=it },
                           label={Text("Enter name")}
         )
+        Spacer(modifier=Modifier.height(8.dp))
+        OutlinedTextField(value=age.value,
+                         onValueChange = {age.value = it},
+                         label={Text("Enter age:")}
+        )
         Spacer(modifier=Modifier.height(16.dp))
         Button(onClick = {
-               navigatetosecondScreen()
+               navigatetosecondscreen(name.value,age.value)
         }) {
             Text("Go to second screen")
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun FirstScreenPreview(){
-    FirstScreen({})
+    FirstScreen({name,age->})
 }
