@@ -54,15 +54,8 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.6")
     //View model
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-
-    //Network calling
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-
-    //json to kotlin object mapping
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    //image loading
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    //location api
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     // Reverted to versions compatible with SDK 34
     implementation("androidx.core:core-ktx:1.12.0")

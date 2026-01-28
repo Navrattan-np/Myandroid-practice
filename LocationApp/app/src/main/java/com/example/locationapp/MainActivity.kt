@@ -3,6 +3,7 @@ package com.example.locationapp
 import android.Manifest
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -17,20 +18,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.locationapp.ui.theme.LocationAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewmodel:LocationViewModel=viewModel()
             LocationAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
+                     MyApp(viewmodel)
                 }
             }
         }
@@ -38,9 +42,16 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@Composable
+fun MyApp(viemodel:LocationViewModel){
+    val context= LocalContext.current
+    val localutils=LocationUtils(context)
+    LocationDisplay(localutils,viemodel,context)
+}
+
 
 @Composable
-fun  LocationDisplay(locationutils:LocationUtils,context:Context){
+fun  LocationDisplay(locationutils:LocationUtils,viemodel:LocationViewModel,context:Context){
 
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
@@ -56,7 +67,16 @@ fun  LocationDisplay(locationutils:LocationUtils,context:Context){
                             context as MainActivity,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                 
-
+                if(rationaleRequired){
+                    Toast.makeText(context,
+                           "Location Permission is required for this feature to work",
+                        Toast.LENGTH_LONG).show()
+                }
+                else{
+                    Toast.makeText(context,
+                           "Location permission is required. Please enable it in the android setting",
+                        Toast.LENGTH_LONG).show()
+                }
             }
 
         })
@@ -69,9 +89,15 @@ fun  LocationDisplay(locationutils:LocationUtils,context:Context){
 
         Button(onClick= {
                  if (locationutils.hasLocationPermission(context))
-                    //if permission is granted then display
-                 else
-                     //permission not granted ask for permission
+                    //if permission has granted then display
+                 else{
+                     requestPermissionLauncher.launch(
+                         arrayOf(
+                             Manifest.permission.ACCESS_FINE_LOCATION,
+                             Manifest.permission.ACCESS_COARSE_LOCATION
+                         )
+                     )
+                 }
         }
         ){Text("Get location")}
     }
