@@ -51,14 +51,19 @@ fun MyApp(viemodel:LocationViewModel){
 
 
 @Composable
-fun  LocationDisplay(locationutils:LocationUtils,viemodel:LocationViewModel,context:Context){
+fun  LocationDisplay(locationutils:LocationUtils,viewmodel:LocationViewModel,context:Context){
+
+    val location=viewmodel.location.value
 
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = {permissions->
             if(permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ==true
-                && permissions[Manifest.permission.ACCESS_FINE_LOCATION]==true)
+                && permissions[Manifest.permission.ACCESS_FINE_LOCATION]==true) {
+
                 //i have access to location
+                locationutils.startLocationUpdates(viewmodel)
+            }
             else{
                 val rationaleRequired= ActivityCompat.shouldShowRequestPermissionRationale(
                     context as MainActivity,
@@ -85,11 +90,16 @@ fun  LocationDisplay(locationutils:LocationUtils,viemodel:LocationViewModel,cont
            horizontalAlignment = Alignment.CenterHorizontally,
            verticalArrangement = Arrangement.Center
     ){
-         Text("Location not available")
+        if(location!=null)
+            Text("Address: ${location.latitude} ${location.longitude}")
+        else
+            Text("Location not available")
 
         Button(onClick= {
-                 if (locationutils.hasLocationPermission(context))
-                    //if permission has granted then display
+                 if (locationutils.hasLocationPermission(context)) {
+                     //if permission has granted then display
+                     locationutils.startLocationUpdates(viewmodel)
+                 }
                  else{
                      requestPermissionLauncher.launch(
                          arrayOf(
