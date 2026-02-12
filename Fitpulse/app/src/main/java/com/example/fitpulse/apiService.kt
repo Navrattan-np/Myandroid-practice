@@ -8,11 +8,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 
-private val retrofit= Retrofit.Builder()
+private val retrofit:Retrofit= Retrofit.Builder()
     .baseUrl("https://api.edamam.com/")
     .addConverterFactory(GsonConverterFactory.create()).build()
 
-val mealService=retrofit.create(ApiService::class.java)
+val mealService:ApiService=retrofit.create(ApiService::class.java)
 interface ApiService{
     @POST("api/meal-planner/v1/{app_id}/select")
     suspend fun generatePlan(
