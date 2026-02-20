@@ -34,7 +34,7 @@ fun AddEditDetailView(
         topBar={AppBarView(
             title=if(id!=0L)  stringResource(id= R.string.update_wish)
                   else stringResource(id=R.string.add_wish),
-            {}
+            {navController.navigateUp()}
         )}
     ){
         Column(
@@ -62,7 +62,15 @@ fun AddEditDetailView(
 
             Spacer(Modifier.height(10.dp))
             Button(
-                onClick={}
+                onClick={
+                    if(viewModel.wishTitleState.isNotEmpty() &&
+                        viewModel.wishDescriptionState.isNotEmpty()){
+                        //TODO
+                    }
+                    else{
+                        //TODO
+                    }
+                }
             ){
                 Text(
                     text=if(id!=0L) stringResource(id=R.string.update_wish)
