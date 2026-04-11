@@ -1,0 +1,30 @@
+[33m02e97eb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m implementing roomdatabase
+[33m9201cf6[m Refactor HomeView call in Navigation
+[33m64d8ea0[m Refactor HomeView and WishItem components
+[33m54c496b[m Refactor navigation to use lambda for first screen
+[33mbe33676[m Revising basic concepts
+[33m3c90ab8[m learning navigation
+[33m2a86380[m add item view
+[33m3dbb36d[m implementng navigation
+[33mec50287[m basic
+[33mca3c2f0[m mealScreen added
+[33m978a8e0[m Api integrated
+[33m297c174[m final
+[33m0929432[m Address from coordinates
+[33m9fec478[m accessed latitude and longitude
+[33m2079e91[m learning permission access
+[33ma90cde4[m Adding navigation
+[33m02bb179[m learning navigation
+[33m9a12515[m Finalized ShoppingListapp: Added editing and deleting logic
+[33m97f9a61[m learning navigation
+[33md373687[m created ui
+[33m145d8e7[m viewmodel and api calling in stock tracker
+[33mcb755e8[m basic of app
+[33mc6d7c65[m network setup completed
+[33me7f14fb[m json+retrofit basics
+[33me63e95c[m learning repository
+[33m56d89c3[m Added ViewModel
+[33m4b31601[m basic counter
+[33mdae7efb[m Added CaptainGame
+[33mc4350a8[m Improved unit conversion logic
+[33m8a97c6f[m Initial commit: Unit Converter app
